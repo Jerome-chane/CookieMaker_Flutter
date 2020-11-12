@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'package:cookie_maker/models/Data.dart';
+import 'package:cookie_maker/models/Device.dart';
 import 'package:http/http.dart' as http;
 
 class CookieService {
-  final String _urlAndroid = "http://10.0.2.2:5000/cookie";
-  // final String _urlIOS = "http://127.0.0.1:5000/cookie";
+  final String _url = Device.isIOS
+      ? "http://127.0.0.1:5000/cookie"
+      : "http://10.0.2.2:5000/cookie";
 
   Future<List<Cookie>> getCookies() async {
-    dynamic response = await http.get(_urlAndroid); //10.0.2.2 replace localhost
+    dynamic response = await http.get(_url); //10.0.2.2 replace localhost
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Cookie.fromJson(job)).toList();
@@ -17,24 +19,22 @@ class CookieService {
   }
 
   Future<List<Cookie>> getNonShippedCookies() async {
-    dynamic response = await http.get('${_urlAndroid}/nonshipped');
+    dynamic response = await http.get('$_url/nonshipped');
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Cookie.fromJson(job)).toList();
     } else {
-      // throw Exception('Failed to Fetch cookies.');
-      return null;
+      throw Exception('Failed to Fetch cookies.');
     }
   }
 
   Future<List<Cookie>> getShippedCookies() async {
-    dynamic response = await http.get('${_urlAndroid}/shipped');
+    dynamic response = await http.get('$_url/shipped');
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Cookie.fromJson(job)).toList();
     } else {
-      // throw Exception('Failed to Fetch cookies.');
-      return null;
+      throw Exception('Failed to Fetch cookies.');
     }
   }
 
@@ -43,7 +43,7 @@ class CookieService {
         jsonEncode({"NumberOfCookies": quantity, "recipeName": recieName});
 
     return http
-        .post(_urlAndroid,
+        .post(_url,
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },

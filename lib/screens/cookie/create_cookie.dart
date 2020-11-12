@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cookie_maker/models/Alert.dart';
 import 'package:cookie_maker/models/Data.dart';
 import 'package:cookie_maker/models/Device.dart';
@@ -27,7 +28,9 @@ class _CreateCookieState extends State<CreateCookie> {
   bool connected = false;
 
   final hubConnection = hub.HubConnectionBuilder()
-      .withUrl("http://10.0.2.2:5000/connect")
+      .withUrl(Device.isIOS
+          ? "http://127.0.0.1:5000/connect"
+          : "http://10.0.2.2:5000/connect")
       .build();
 
   @override
@@ -70,7 +73,7 @@ class _CreateCookieState extends State<CreateCookie> {
       body: loading
           ? Loading()
           : Container(
-              padding: EdgeInsets.all(40.0),
+              padding: EdgeInsets.all(30.0),
               child: ListView(
                 children: <Widget>[
                   Row(
@@ -94,7 +97,14 @@ class _CreateCookieState extends State<CreateCookie> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("Select a recipe"),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: AutoSizeText(
+                            "Select a recipe",
+                            style: TextStyle(fontSize: 5),
+                            maxLines: 1,
+                          ),
+                        ),
                         buildFutureBuilder(),
                       ]),
                   SizedBox(
@@ -111,8 +121,10 @@ class _CreateCookieState extends State<CreateCookie> {
                           startConnection();
                           showAlertDialog(context, "Hang on!",
                               "Connecting with the server. Please try again");
+                          return null;
                         }
                         if (connected) {
+                          print("CONNECTED ${connected}");
                           await _cookieService
                               .createCookie(quantity, selectedRecipe.recipeName)
                               .then((response) {
@@ -149,7 +161,7 @@ class _CreateCookieState extends State<CreateCookie> {
           List<Recipe> recipes = snapshot.data ?? [];
           return Expanded(
               child: SizedBox(
-            height: Device.height * 0.2,
+            height: Device.height * 0.3,
             child: Scrollbar(
               radius: Radius.circular(20),
               child: ListView.builder(
@@ -170,20 +182,27 @@ class _CreateCookieState extends State<CreateCookie> {
                           });
                         },
                         child: Container(
-                          width: 200,
+                          width: Device.width * 0.02,
                           height: 100,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(recipes[index].recipeName),
+                              AutoSizeText(
+                                recipes[index].recipeName,
+                                style: TextStyle(fontSize: 1),
+                                maxLines: 2,
+                              ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   for (var ingredient
                                       in recipes[index].ingredientsList)
-                                    Text(
-                                        'x${ingredient.quantity} ${ingredient.name} ')
+                                    AutoSizeText(
+                                      'x${ingredient.quantity} ${ingredient.name} ',
+                                      style: TextStyle(fontSize: 5),
+                                      maxLines: 1,
+                                    ),
                                 ],
                               )
                             ],
