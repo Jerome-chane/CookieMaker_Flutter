@@ -14,7 +14,7 @@ class CookieService {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Cookie.fromJson(job)).toList();
     } else {
-      throw Exception('Failed to Fetch cookies.');
+      return null;
     }
   }
 
@@ -24,7 +24,7 @@ class CookieService {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Cookie.fromJson(job)).toList();
     } else {
-      throw Exception('Failed to Fetch cookies.');
+      return null;
     }
   }
 
@@ -34,7 +34,7 @@ class CookieService {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Cookie.fromJson(job)).toList();
     } else {
-      throw Exception('Failed to Fetch cookies.');
+      return null;
     }
   }
 

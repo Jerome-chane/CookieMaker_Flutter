@@ -14,7 +14,7 @@ class RecipeService {
       List<dynamic> jsonResponse = json.decode(response.body);
       return jsonResponse.map((job) => new Recipe.fromJson(job)).toList();
     } else {
-      throw Exception('Failed to Fetch cookies.');
+      return null;
     }
   }
 
