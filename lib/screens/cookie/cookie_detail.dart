@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cookie_maker/models/Data.dart';
 import 'package:cookie_maker/models/Device.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,11 @@ class CookieDetail extends StatelessWidget {
                   ),
                   Container(
                     height: Device.height * 0.09,
-                    child: Text(cookie.id),
+                    child: AutoSizeText(
+                      cookie.id,
+                      style: TextStyle(fontSize: 5),
+                      maxLines: 1,
+                    ),
                   ),
                 ],
               ),
@@ -42,7 +47,11 @@ class CookieDetail extends StatelessWidget {
                   ),
                   Container(
                     height: Device.height * 0.09,
-                    child: Text(cookie.recipeId),
+                    child: AutoSizeText(
+                      cookie.recipeId,
+                      style: TextStyle(fontSize: 5),
+                      maxLines: 1,
+                    ),
                   ),
                 ],
               ),
