@@ -16,6 +16,7 @@ class _RecipeDashboardState extends State<RecipeDashboard> {
   bool loading = false;
   @override
   Widget build(BuildContext context) {
+    Device().init(context);
     return Scaffold(
         appBar: AppBar(
           // automaticallyImplyLeading: false,

@@ -24,21 +24,21 @@ class _CookieCookingState extends State<CookieCooking> {
   void initState() {
     super.initState();
     _controllerCenterRight =
-        ConfettiController(duration: const Duration(seconds: 5));
+        ConfettiController(duration: const Duration(seconds: 1));
 
     stream = widget.receivedStream.listen(
       (value) {
         setState(() {
           data = value;
-          progress = (value[2] / 100).toDouble();
+          progress = (value[3] / 100).toDouble();
         });
         print(
-            "COOKIE #${value[0].toString()} Status: ${value[1].toString()}  PROGRESS ${value[2].toString()}");
-        if (value[1].toString() == "Cooking finished !") {
+            "COOKIE #${value[1].toString()} Status: ${value[2].toString()}  PROGRESS ${value[3].toString()}");
+        if (value[2].toString() == "Cooking finished !") {
           setState(() {
             done = true;
           });
-          _controllerCenterRight.play();
+          // _controllerCenterRight.play();
         }
       },
     );
@@ -51,6 +51,7 @@ class _CookieCookingState extends State<CookieCooking> {
 
   @override
   Widget build(BuildContext context) {
+    Device().init(context);
     _onBackPressed() {
       Navigator.of(context).pop();
     }
@@ -67,6 +68,8 @@ class _CookieCookingState extends State<CookieCooking> {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0),
             child: ListView(
+              padding: EdgeInsets.only(
+                  top: Device.portrait ? Device.height * 0.1 : 0),
               children: [
                 Container(
                   width: Device.portrait
@@ -77,7 +80,7 @@ class _CookieCookingState extends State<CookieCooking> {
                       : Device.height * 0.5,
                   child: Center(
                     child: done
-                        ? Image.asset("assets/danse.gif")
+                        ? Image.asset("assets/eat.gif")
                         : Image.asset("assets/cooking.gif"),
                   ),
                 ),
@@ -101,8 +104,8 @@ class _CookieCookingState extends State<CookieCooking> {
                       }
                       return Text(
                         done
-                            ? "${snapshot.data[1].toString()}"
-                            : "COOKIE #${snapshot.data[0].toString()}: ${snapshot.data[1].toString()}",
+                            ? "Cooking finished!"
+                            : "COOKIE #${snapshot.data[1].toString()}: ${snapshot.data[2].toString()}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue[500]),

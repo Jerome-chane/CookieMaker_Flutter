@@ -57,6 +57,7 @@ class _CreateCookieState extends State<CreateCookie> {
   }
 
   void onReceiveMessage(dynamic result) {
+    print("Message Received");
     _streamController.add(result);
   }
 

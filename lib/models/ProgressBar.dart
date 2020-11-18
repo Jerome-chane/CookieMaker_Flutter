@@ -23,7 +23,7 @@ class ProgressBar extends StatelessWidget {
               value: progress,
             ),
             Center(
-              child: Text(data == null ? "0%" : "${data[2].toString()}%",
+              child: Text(data == null ? "0%" : "${data[3].toString()}%",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.blue[500])),
             )
